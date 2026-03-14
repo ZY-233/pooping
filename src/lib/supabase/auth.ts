@@ -7,9 +7,20 @@ export async function ensureClientUser(): Promise<{
   errorMessage: string | null;
 }> {
   const supabase = getSupabaseBrowserClient();
+  const currentSession = await supabase.auth.getSession();
+
+  if (currentSession.error) {
+    return { user: null, errorMessage: currentSession.error.message };
+  }
+
+  const sessionUser = currentSession.data.session?.user ?? null;
+  if (sessionUser) {
+    return { user: sessionUser, errorMessage: null };
+  }
+
   const current = await supabase.auth.getUser();
 
-  if (current.error) {
+  if (current.error && current.error.name !== "AuthSessionMissingError") {
     return { user: null, errorMessage: current.error.message };
   }
 
