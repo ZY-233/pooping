@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# 今日顺顺
 
-## Getting Started
+移动端优先的轻量记录应用（非医疗用途）。
 
-First, run the development server:
+## 技术栈
+
+- Next.js (App Router) + TypeScript
+- Tailwind CSS + shadcn/ui + Framer Motion
+- Supabase (Auth / Postgres / RLS)
+
+## 本地启动
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 环境变量
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+复制 `.env.example` 为 `.env.local`：
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
 
-## Learn More
+## PWA 与 SEO
 
-To learn more about Next.js, take a look at the following resources:
+已配置：
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app/manifest.ts`
+- `public/sw.js`
+- `src/app/robots.ts`
+- `src/app/sitemap.ts`
+- `public/icons/icon-192.svg`
+- `public/icons/icon-512.svg`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 上线前检查
 
-## Deploy on Vercel
+```bash
+npm run lint
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+请确认：
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Supabase RLS 与 migration 已执行
+- Supabase Auth 已开启匿名登录与邮箱 Magic Link
+- `NEXT_PUBLIC_SITE_URL` 已设置为正式域名
+- Vercel 域名已绑定，HTTPS 正常
+
+## 说明
+
+- 本产品仅用于日常记录，不提供医疗诊断或治疗建议。
